@@ -788,6 +788,70 @@ export interface PluginI18NLocale extends Schema.CollectionType {
   };
 }
 
+export interface ApiAirlineAirline extends Schema.CollectionType {
+  collectionName: 'airlines';
+  info: {
+    singularName: 'airline';
+    pluralName: 'airlines';
+    displayName: 'Airline';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    Name: Attribute.String & Attribute.Required;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::airline.airline',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::airline.airline',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiAirportAirport extends Schema.CollectionType {
+  collectionName: 'airports';
+  info: {
+    singularName: 'airport';
+    pluralName: 'airports';
+    displayName: 'Airport';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    AirportCode: Attribute.String & Attribute.Required;
+    AirportName: Attribute.String & Attribute.Required;
+    Country: Attribute.String & Attribute.Required;
+    State: Attribute.String & Attribute.Required;
+    City: Attribute.String & Attribute.Required;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::airport.airport',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::airport.airport',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiCategoryCategory extends Schema.CollectionType {
   collectionName: 'categories';
   info: {
@@ -816,6 +880,52 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::category.category',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiFlightFlight extends Schema.CollectionType {
+  collectionName: 'flights';
+  info: {
+    singularName: 'flight';
+    pluralName: 'flights';
+    displayName: 'Flight';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    FlightNumber: Attribute.String & Attribute.Required;
+    Airline: Attribute.Relation<
+      'api::flight.flight',
+      'oneToOne',
+      'api::airline.airline'
+    >;
+    OriginAirport: Attribute.Relation<
+      'api::flight.flight',
+      'oneToOne',
+      'api::airport.airport'
+    >;
+    Seats: Attribute.Integer & Attribute.Required;
+    DestinationAirport: Attribute.Relation<
+      'api::flight.flight',
+      'oneToOne',
+      'api::airport.airport'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::flight.flight',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::flight.flight',
       'oneToOne',
       'admin::user'
     > &
@@ -877,7 +987,10 @@ declare module '@strapi/types' {
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'plugin::i18n.locale': PluginI18NLocale;
+      'api::airline.airline': ApiAirlineAirline;
+      'api::airport.airport': ApiAirportAirport;
       'api::category.category': ApiCategoryCategory;
+      'api::flight.flight': ApiFlightFlight;
       'api::restaurant.restaurant': ApiRestaurantRestaurant;
     }
   }
